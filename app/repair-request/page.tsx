@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { appliances } from "@/data/appliances";
 import { RepairRequestForm } from "@/components/repair-request/repair-request-form";
 import { PhoneCta } from "@/components/ui/phone-cta";
 import { siteConfig } from "@/lib/site";
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/repair-request" },
 };
 
-export default function RepairRequestPage() {
+export default async function RepairRequestPage({ searchParams }: PageProps<"/repair-request">) {
+  // Only a single, known appliance id preselects; anything else (missing, repeated, unknown) keeps the placeholder.
+  const { appliance } = await searchParams;
+  const defaultAppliance = appliances.find((item) => item.id === appliance)?.id;
+
   return (
     <main className="flex-1">
       <div className="page-container py-8 sm:py-12">
@@ -56,7 +61,7 @@ export default function RepairRequestPage() {
             >
               فرم زیر فعلاً فقط پیش‌نمایش است و اطلاعات شما ارسال یا ذخیره نمی‌شود. لطفاً برای ثبت درخواست تماس بگیرید.
             </p>
-            <RepairRequestForm />
+            <RepairRequestForm key={defaultAppliance ?? "none"} defaultAppliance={defaultAppliance} />
           </div>
         </div>
       </div>
