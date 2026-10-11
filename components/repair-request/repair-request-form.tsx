@@ -1,68 +1,27 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useActionState, useEffect, useRef, type ReactNode } from "react";
+import { submitRepairRequest, type RepairRequestState } from "@/actions/submit-repair-request";
 import { appliances } from "@/data/appliances";
+import {
+  LIMITS,
+  fieldOrder,
+  isValidIranianPhone,
+  normalizePhone,
+  type FieldName,
+  type FieldValues,
+} from "@/lib/repair-request/validation";
 import type { ApplianceId } from "@/types/appliance";
 
 /*
- * Frontend-only form. Online submission is NOT connected to any backend yet:
- * submitting only runs client-side validation and shows a notice. Nothing is
- * sent, stored or simulated. When the secure server-side flow exists, replace
- * the preventDefault in `handleSubmit` with the real action and drop the notice
- * in the page.
+ * Submission runs through the `submitRepairRequest` Server Action, which validates every field again
+ * on the server and stores the request. Success is shown only after the insert is confirmed; on any
+ * error the submitted values are kept in the form.
  */
-const LIMITS = { name: { min: 2, max: 80 }, phone: { max: 20 }, problem: { min: 10, max: 1000 } } as const;
-
 const baseFieldClass =
   "mt-1.5 block w-full rounded-xl border bg-surface px-3.5 py-2.5 text-base text-foreground placeholder:text-muted/70 focus:border-accent focus:outline-2 focus:outline-offset-1 focus:outline-accent/40";
 
-type FieldName = "name" | "phone" | "appliance" | "problem";
-type Errors = Partial<Record<FieldName, string>>;
-
-const fieldOrder: readonly FieldName[] = ["name", "phone", "appliance", "problem"];
-const applianceIds: readonly string[] = appliances.map((appliance) => appliance.id);
-
-// Persian (U+06F0..) and Arabic-Indic (U+0660..) digits to ASCII.
-function toAsciiDigits(value: string) {
-  return value
-    .replace(/[۰-۹]/g, (digit) => String(digit.charCodeAt(0) - 0x06f0))
-    .replace(/[٠-٩]/g, (digit) => String(digit.charCodeAt(0) - 0x0660));
-}
-
-// Digits only, with a +98 / 0098 / 98 country prefix turned into the local leading 0.
-function normalizePhone(value: string) {
-  const ascii = toAsciiDigits(value).replace(/[\s\-().‎‏‌]/g, "");
-  let digits = ascii.replace(/\D/g, "");
-  if (ascii.startsWith("+") || digits.startsWith("00")) digits = digits.replace(/^(?:00)?98/, "0");
-  else if (/^98\d{10}$/.test(digits)) digits = `0${digits.slice(2)}`;
-  return digits;
-}
-
-// Mobile: 09xxxxxxxxx. Landline: 0 + area code (not 9) + 8 digits, e.g. 08634859005.
-function isValidIranianPhone(digits: string) {
-  return /^09\d{9}$/.test(digits) || /^0[1-8]\d{9}$/.test(digits);
-}
-
-function validate(values: Record<FieldName, string>): Errors {
-  const errors: Errors = {};
-  const name = values.name.trim();
-  const problem = values.problem.trim();
-
-  if (!name) errors.name = "نام و نام خانوادگی را وارد کنید.";
-  else if (name.length < LIMITS.name.min) errors.name = "نام باید دست‌کم ۲ حرف باشد.";
-
-  if (!values.phone.trim()) errors.phone = "شماره تماس را وارد کنید.";
-  else if (!isValidIranianPhone(normalizePhone(values.phone))) {
-    errors.phone = "شماره معتبر نیست. نمونه: ۰۹۱۲۳۴۵۶۷۸۹ یا ۰۸۶۳۴۸۵۹۰۰۵";
-  }
-
-  if (!applianceIds.includes(values.appliance)) errors.appliance = "نوع دستگاه را انتخاب کنید.";
-
-  if (!problem) errors.problem = "مشکل دستگاه را توضیح دهید.";
-  else if (problem.length < LIMITS.problem.min) errors.problem = "توضیح کمی کوتاه است (دست‌کم ۱۰ حرف).";
-
-  return errors;
-}
+const initialState: RepairRequestState = { status: "idle" };
 
 function Field({
   id,
@@ -96,8 +55,35 @@ function Field({
 }
 
 export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: ApplianceId }) {
-  const [errors, setErrors] = useState<Errors>({});
-  const [checked, setChecked] = useState(false);
+  const [state, formAction, pending] = useActionState(submitRepairRequest, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+  // When the form was shown; sent with each submission so the server can enforce a minimum fill time.
+  const startedAt = useRef(0);
+
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
+
+  const errors = state.status === "error" ? state.errors : {};
+  const values: Partial<FieldValues> = state.status === "error" ? state.values : {};
+
+  // Move focus to the first invalid field after a failed submission.
+  useEffect(() => {
+    if (state.status !== "error") return;
+    const first = fieldOrder.find((field) => state.errors[field]);
+    if (first) formRef.current?.querySelector<HTMLElement>(`#rr-${first}`)?.focus();
+  }, [state]);
+
+  if (state.status === "success") {
+    return (
+      <div role="status" className="rounded-3xl border border-accent/40 bg-accent/[0.06] p-5 sm:p-7">
+        <h2 className="text-lg/8 font-bold text-foreground">درخواست شما ثبت شد</h2>
+        <p className="mt-1 text-sm/7 text-foreground">
+          درخواست تعمیر شما با موفقیت ثبت شد. به‌زودی با شما تماس می‌گیریم.
+        </p>
+      </div>
+    );
+  }
 
   function fieldProps(name: FieldName) {
     const invalid = Boolean(errors[name]);
@@ -112,32 +98,16 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
     };
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    // Always prevented: there is no backend to submit to yet.
-    event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
-    const values = {
-      name: String(data.get("name") ?? ""),
-      phone: String(data.get("phone") ?? ""),
-      appliance: String(data.get("appliance") ?? ""),
-      problem: String(data.get("problem") ?? ""),
-    };
-    const next = validate(values);
-    setErrors(next);
-    setChecked(Object.keys(next).length === 0);
-
-    const first = fieldOrder.find((field) => next[field]);
-    if (first) form.querySelector<HTMLElement>(`#rr-${first}`)?.focus();
-  }
-
   const phoneProps = fieldProps("phone");
 
   return (
     <form
+      ref={formRef}
       noValidate
-      aria-describedby="form-status"
-      onSubmit={handleSubmit}
+      action={(formData) => {
+        formData.set("startedAt", String(startedAt.current));
+        return formAction(formData);
+      }}
       className="rounded-3xl border border-border bg-surface p-5 sm:p-7"
     >
       <div className="grid gap-4 sm:grid-cols-2">
@@ -153,7 +123,7 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
             {...fieldProps("name")}
             type="text"
             autoComplete="name"
-            minLength={LIMITS.name.min}
+            defaultValue={values.name}
             maxLength={LIMITS.name.max}
           />
         </Field>
@@ -165,6 +135,7 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
             dir="ltr"
             inputMode="tel"
             autoComplete="tel"
+            defaultValue={values.phone}
             maxLength={LIMITS.phone.max}
             placeholder="09123456789"
             className={`${phoneProps.className} text-right`}
@@ -177,7 +148,7 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
         </Field>
 
         <Field id="rr-appliance" label="نوع دستگاه" error={errors.appliance} className="sm:col-span-2">
-          <select {...fieldProps("appliance")} defaultValue={defaultAppliance ?? ""}>
+          <select {...fieldProps("appliance")} defaultValue={values.appliance || defaultAppliance || ""}>
             <option value="" disabled>
               انتخاب کنید
             </option>
@@ -190,19 +161,27 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
         </Field>
 
         <Field id="rr-problem" label="مشکل دستگاه" error={errors.problem} className="sm:col-span-2">
-          <textarea {...fieldProps("problem")} rows={4} minLength={LIMITS.problem.min} maxLength={LIMITS.problem.max} />
+          <textarea {...fieldProps("problem")} rows={4} defaultValue={values.problem} maxLength={LIMITS.problem.max} />
         </Field>
+
+        {/* Honeypot: hidden from sight, assistive tech and keyboard; bots that fill it are ignored server-side. */}
+        <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden opacity-0">
+          <label>
+            وب‌سایت
+            <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+          </label>
+        </div>
 
         <div className="sm:col-span-2">
           <button
             type="submit"
-            className="inline-flex h-12 w-full items-center justify-center rounded-2xl border-[1.5px] border-accent-strong bg-surface px-6 text-[0.9375rem] font-semibold text-primary transition-colors hover:bg-accent/5 sm:w-auto sm:min-w-52"
+            disabled={pending}
+            className="inline-flex h-12 w-full items-center justify-center rounded-2xl border-[1.5px] border-accent-strong bg-surface px-6 text-[0.9375rem] font-semibold text-primary transition-colors hover:bg-accent/5 disabled:opacity-60 sm:w-auto sm:min-w-52"
           >
-            بررسی اطلاعات
+            {pending ? "در حال ثبت…" : "ثبت درخواست"}
           </button>
-          <p role="status" className="mt-3 text-sm/7 text-foreground empty:hidden">
-            {checked &&
-              "اطلاعات واردشده معتبر است، اما ثبت آنلاین هنوز فعال نیست و چیزی ارسال یا ذخیره نشد. لطفاً برای ثبت درخواست تماس بگیرید."}
+          <p role="status" className="mt-3 text-sm/7 text-red-700 empty:hidden">
+            {state.status === "error" ? state.message : null}
           </p>
         </div>
       </div>

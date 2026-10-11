@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "درخواست تعمیر لوازم خانگی",
-  description: "برای تعمیر و نصب لوازم خانگی در اراک و استان مرکزی با استادکاران تماس بگیرید. ثبت آنلاین درخواست هنوز فعال نشده است.",
+  description: "برای تعمیر و نصب لوازم خانگی در اراک و استان مرکزی با استادکاران تماس بگیرید یا درخواست خود را آنلاین ثبت کنید.",
   alternates: { canonical: "/repair-request" },
 };
 
@@ -35,7 +35,7 @@ export default async function RepairRequestPage({ searchParams }: PageProps<"/re
               همین حالا تماس بگیرید
             </h2>
             <p className="mt-1 text-sm/7 text-muted">
-              ثبت آنلاین درخواست هنوز فعال نشده است. برای ثبت درخواست تعمیر، تماس تلفنی بهترین راه است.
+              برای پاسخ سریع‌تر می‌توانید مستقیم تماس بگیرید، یا فرم را پر کنید تا با شما تماس بگیریم.
             </p>
             <PhoneCta variant="block" className="mt-4" />
             <ul className="mt-4 flex flex-col gap-1 text-sm">
@@ -54,13 +54,6 @@ export default async function RepairRequestPage({ searchParams }: PageProps<"/re
           </section>
 
           <div>
-            <p
-              id="form-status"
-              role="status"
-              className="mb-3 rounded-2xl border border-cta/40 bg-cta/10 px-4 py-3 text-sm/7 font-medium text-foreground"
-            >
-              فرم زیر فعلاً فقط پیش‌نمایش است و اطلاعات شما ارسال یا ذخیره نمی‌شود. لطفاً برای ثبت درخواست تماس بگیرید.
-            </p>
             <RepairRequestForm key={defaultAppliance ?? "none"} defaultAppliance={defaultAppliance} />
           </div>
         </div>
