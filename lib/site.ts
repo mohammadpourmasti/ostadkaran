@@ -8,6 +8,13 @@ function resolveSiteUrl(): string {
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
   }
+  // A real production deployment must never publish localhost canonical/sitemap/robots/JSON-LD URLs.
+  if (process.env.VERCEL_ENV === "production") {
+    throw new Error("NEXT_PUBLIC_SITE_URL is required in production (e.g. https://your-domain.ir, no trailing slash).");
+  }
+  if (process.env.NODE_ENV === "production") {
+    console.warn("[site] NEXT_PUBLIC_SITE_URL is not set; falling back to http://localhost:3000. Set it before deploying.");
+  }
   return "http://localhost:3000";
 }
 

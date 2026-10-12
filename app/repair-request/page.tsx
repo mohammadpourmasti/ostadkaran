@@ -4,10 +4,22 @@ import { RepairRequestForm } from "@/components/repair-request/repair-request-fo
 import { PhoneCta } from "@/components/ui/phone-cta";
 import { siteConfig } from "@/lib/site";
 
+const title = "درخواست تعمیر لوازم خانگی";
+const description =
+  "برای تعمیر و نصب لوازم خانگی در اراک و استان مرکزی با استادکاران تماس بگیرید یا درخواست خود را آنلاین ثبت کنید.";
+
 export const metadata: Metadata = {
-  title: "درخواست تعمیر لوازم خانگی",
-  description: "برای تعمیر و نصب لوازم خانگی در اراک و استان مرکزی با استادکاران تماس بگیرید یا درخواست خود را آنلاین ثبت کنید.",
+  title,
+  description,
   alternates: { canonical: "/repair-request" },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+    title: `${title} | ${siteConfig.name}`,
+    description,
+    url: "/repair-request",
+  },
 };
 
 export default async function RepairRequestPage({ searchParams }: PageProps<"/repair-request">) {

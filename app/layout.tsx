@@ -23,9 +23,6 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
-    title: siteConfig.title,
-    description: siteConfig.description,
-    url: "/",
   },
 };
 
@@ -39,9 +36,9 @@ const businessJsonLd = {
   telephone: siteConfig.contact.phones.map((phone) => phone.href.replace("tel:", "")),
   address: {
     "@type": "PostalAddress",
-    streetAddress: "پردیس یک، خیابان مددی، کوچه مرادی",
-    addressLocality: "اراک",
-    addressRegion: "استان مرکزی",
+    streetAddress: siteConfig.business.address,
+    addressLocality: siteConfig.business.city,
+    addressRegion: siteConfig.business.region,
     addressCountry: "IR",
   },
   areaServed: [

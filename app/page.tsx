@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Hero } from "@/components/hero/hero";
 import { HeroTrustBar } from "@/components/hero/hero-trust-bar";
 import { AboutSection } from "@/components/home/about-section";
@@ -6,6 +7,22 @@ import { FaqSection } from "@/components/home/faq-section";
 import { RepairProcess } from "@/components/home/RepairProcess/RepairProcess";
 import { ServiceAreasSection } from "@/components/home/service-areas-section";
 import { sectionIds } from "@/data/navigation";
+import { siteConfig } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: { absolute: siteConfig.title },
+  description: siteConfig.description,
+  alternates: { canonical: "/" },
+  // Nested openGraph is replaced (not merged) per route, so the shared fields are repeated here.
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: "/",
+  },
+};
 
 export default function Home() {
   return (
