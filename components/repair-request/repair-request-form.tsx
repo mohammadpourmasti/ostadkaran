@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, type ReactNode } from "react";
 import { submitRepairRequest, type RepairRequestState } from "@/actions/submit-repair-request";
 import { appliances } from "@/data/appliances";
+import { brandOptions } from "@/data/brands";
 import {
   LIMITS,
   fieldOrder,
@@ -147,7 +148,7 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
           />
         </Field>
 
-        <Field id="rr-appliance" label="نوع دستگاه" error={errors.appliance} className="sm:col-span-2">
+        <Field id="rr-appliance" label="نوع دستگاه" error={errors.appliance}>
           <select {...fieldProps("appliance")} defaultValue={values.appliance || defaultAppliance || ""}>
             <option value="" disabled>
               انتخاب کنید
@@ -155,6 +156,17 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
             {appliances.map((appliance) => (
               <option key={appliance.id} value={appliance.id}>
                 {appliance.title}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field id="rr-brand" label="برند دستگاه (اختیاری)" error={errors.brand}>
+          <select {...fieldProps("brand")} defaultValue={values.brand || ""}>
+            <option value="">انتخاب نمی‌کنم</option>
+            {brandOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>

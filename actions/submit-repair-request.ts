@@ -49,11 +49,13 @@ export async function submitRepairRequest(
 
   try {
     const supabase = createSupabaseAdminClient();
+    // Requires the five-parameter overload (with p_brand) to exist: apply the migration BEFORE deploying this.
     const { data, error } = await supabase.rpc("insert_repair_request_limited", {
       p_name: values.name.trim(),
       p_phone: normalizePhone(values.phone),
       p_appliance: values.appliance,
       p_problem: values.problem.trim(),
+      p_brand: values.brand || null,
     });
     // Never log `values` (customer data).
     if (error) {

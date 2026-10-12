@@ -96,7 +96,7 @@ export function ApplianceExplorer({ technician }: ApplianceExplorerProps) {
   return (
     <div className="flex flex-col items-center gap-5 md:flex-row md:items-center md:justify-center md:gap-6">
       <div
-        className="@container relative mb-8 w-full max-w-[28rem] min-w-0 sm:max-w-[38rem] md:flex-1 md:translate-x-6 md:translate-y-8 lg:max-w-[49rem] xl:max-w-[55rem] xl:translate-x-24 xl:translate-y-20"
+        className="@container relative mb-3 w-full max-w-[28rem] min-w-0 sm:max-w-[38rem] md:flex-1 md:translate-x-6 md:translate-y-4 lg:max-w-[49rem] xl:w-[28rem] xl:max-w-none xl:flex-none xl:-me-14 xl:translate-x-14 xl:translate-y-6"
         style={{ aspectRatio: `100 / ${SCENE_H}` }}
       >
         {/* Atmosphere */}
@@ -209,7 +209,7 @@ export function ApplianceExplorer({ technician }: ApplianceExplorerProps) {
       {/* Hint panel: collapses on narrow screens, keeps its column (but hides) on wider ones */}
       <div
         inert={!selected}
-        className={`grid w-full max-w-[26rem] transition-[grid-template-rows,opacity] duration-500 sm:max-w-[30rem] md:w-[16.5rem] md:max-w-none md:shrink-0 md:grid-rows-[1fr] ${
+        className={`grid w-full max-w-[26rem] md:-translate-y-6 transition-[grid-template-rows,opacity] duration-500 sm:max-w-[30rem] md:w-[16.5rem] md:max-w-none md:shrink-0 md:grid-rows-[1fr] ${
           selected ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >

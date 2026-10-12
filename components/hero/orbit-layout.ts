@@ -10,7 +10,7 @@ import type { ApplianceId } from "@/types/appliance";
  * changes).
  */
 
-export const SCENE_H = 141;
+export const SCENE_H = 129;
 
 // Scene units -> CSS % of the scene height (x needs no conversion).
 export const pctY = (units: number) => Math.round((units / SCENE_H) * 10000) / 100;
@@ -69,11 +69,11 @@ export const orbitSlots = Object.fromEntries(
 
 // Technician placement: crouched just below the orbit ring, facing the centre showcase.
 // The image is 3:2, so its box is width * 2/3 tall; the figure spans ~5%-95% of that.
-const TECHNICIAN_WIDTH = 72;
-const TECHNICIAN_FIGURE_TOP = 86.5; // scene units: just under the ring's lowest point
+const TECHNICIAN_WIDTH = 69;
+const TECHNICIAN_FIGURE_TOP = 83; // scene units: raised into the open space beside the ring, left of the lower appliances
 
 export const technicianBox = {
-  left: -33,
+  left: -28,
   top: pctY(TECHNICIAN_FIGURE_TOP - TECHNICIAN_WIDTH * (2 / 3) * 0.05),
   width: TECHNICIAN_WIDTH,
 };

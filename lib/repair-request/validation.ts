@@ -1,15 +1,16 @@
 import { appliances } from "@/data/appliances";
+import { brandOptions } from "@/data/brands";
 import type { ApplianceId } from "@/types/appliance";
 
 // Mirrors the CHECK constraints on public.repair_requests. The server is the source of truth;
 // the client reuses this module only for instant feedback.
 export const LIMITS = { name: { min: 2, max: 80 }, phone: { max: 20 }, problem: { min: 10, max: 1000 } } as const;
 
-export type FieldName = "name" | "phone" | "appliance" | "problem";
+export type FieldName = "name" | "phone" | "appliance" | "brand" | "problem";
 export type FieldValues = Record<FieldName, string>;
 export type FieldErrors = Partial<Record<FieldName, string>>;
 
-export const fieldOrder: readonly FieldName[] = ["name", "phone", "appliance", "problem"];
+export const fieldOrder: readonly FieldName[] = ["name", "phone", "appliance", "brand", "problem"];
 
 const applianceIds: readonly string[] = appliances.map((appliance) => appliance.id);
 
@@ -32,6 +33,13 @@ export function normalizePhone(value: string) {
 // Mobile: 09xxxxxxxxx. Landline: 0 + area code (not 9) + 8 digits, e.g. 08634859005.
 export function isValidIranianPhone(digits: string) {
   return /^09\d{9}$/.test(digits) || /^0[1-8]\d{9}$/.test(digits);
+}
+
+const brandValues: readonly string[] = brandOptions.map((option) => option.value);
+
+// Brand is optional for now: empty means "not chosen"; otherwise it must be a listed option.
+export function isBrandValue(value: string) {
+  return value === "" || brandValues.includes(value);
 }
 
 export function isApplianceId(value: string): value is ApplianceId {
@@ -64,6 +72,8 @@ export function validate(values: FieldValues): FieldErrors {
   }
 
   if (!isApplianceId(values.appliance)) errors.appliance = "نوع دستگاه را انتخاب کنید.";
+
+  if (!isBrandValue(values.brand)) errors.brand = "برند انتخاب‌شده معتبر نیست.";
 
   if (!problem) errors.problem = "مشکل دستگاه را توضیح دهید.";
   else if (length(problem) < LIMITS.problem.min) errors.problem = "توضیح کمی کوتاه است (دست‌کم ۱۰ حرف).";

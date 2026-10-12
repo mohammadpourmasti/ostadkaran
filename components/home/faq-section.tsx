@@ -44,11 +44,14 @@ const faqs: readonly { question: string; answer: string }[] = [
   },
 ];
 
+const columnSplit = Math.ceil(faqs.length / 2);
+const faqColumns = [faqs.slice(0, columnSplit), faqs.slice(columnSplit)] as const;
+
 export function FaqSection() {
   return (
     <section id={sectionIds.faq} aria-labelledby="faq-heading" className="bg-surface">
-      <div className="page-container grid gap-6 py-10 sm:py-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-12">
-        <header>
+      <div className="page-container py-8 sm:py-10">
+        <header className="mb-5">
           <h2 id="faq-heading" className="text-2xl/[1.6] font-extrabold text-primary sm:text-3xl/[1.6]">
             سوالات متداول
           </h2>
@@ -57,15 +60,22 @@ export function FaqSection() {
           </p>
         </header>
 
-        <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface">
-          {faqs.map((faq) => (
-            <details key={faq.question} className="group px-4 transition-colors open:bg-background sm:px-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-4 text-base/7 font-semibold text-foreground marker:hidden [&::-webkit-details-marker]:hidden">
-                {faq.question}
-                <ChevronDownIcon className="size-5 shrink-0 text-accent-strong transition-transform group-open:rotate-180" />
-              </summary>
-              <p className="pb-4 text-sm/7 text-muted">{faq.answer}</p>
-            </details>
+        <div className="grid items-start gap-4 lg:grid-cols-2">
+          {faqColumns.map((column, index) => (
+            <div
+              key={index}
+              className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface"
+            >
+              {column.map((faq) => (
+                <details key={faq.question} className="group px-4 transition-colors open:bg-background">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-base/7 font-semibold text-foreground marker:hidden [&::-webkit-details-marker]:hidden">
+                    {faq.question}
+                    <ChevronDownIcon className="size-5 shrink-0 text-accent-strong transition-transform group-open:rotate-180" />
+                  </summary>
+                  <p className="pb-3 text-sm/7 text-muted">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
           ))}
         </div>
       </div>

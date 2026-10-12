@@ -30,6 +30,7 @@ export const metadata: Metadata = {
 const businessJsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
+  "@id": `${siteConfig.url}/#business`,
   name: siteConfig.name,
   description: siteConfig.description,
   url: siteConfig.url,

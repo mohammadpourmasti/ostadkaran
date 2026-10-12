@@ -16,7 +16,7 @@ export function Hero() {
       {/* Replaceable background layer — see .hero-backdrop in globals.css */}
       <div aria-hidden="true" className="hero-backdrop absolute inset-0 -z-10" />
 
-      <div className="page-container grid gap-x-10 gap-y-6 py-8 sm:py-10 xl:grid-cols-[minmax(0,31rem)_minmax(0,1fr)] xl:grid-rows-[1fr_auto_1fr] xl:py-8">
+      <div className="page-container grid gap-x-10 gap-y-6 py-6 sm:py-8 xl:grid-cols-[minmax(0,31rem)_minmax(0,1fr)] xl:grid-rows-[1fr_auto_1fr] xl:pt-3 xl:pb-0">
         <div className="max-w-xl xl:row-start-1 xl:self-end">
           <h1
             id="hero-title"

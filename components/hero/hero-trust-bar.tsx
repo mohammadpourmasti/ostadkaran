@@ -12,8 +12,8 @@ const items: readonly { icon: ComponentType<IconProps>; lines: readonly [string,
 // Standalone trust strip directly under the hero; the last cell explains the orbit interaction.
 export function HeroTrustBar() {
   return (
-    <section aria-label="چرا استادکاران" className="page-container pb-12">
-      <ul className="grid grid-cols-1 gap-1 rounded-3xl border border-border bg-surface p-2 shadow-[0_12px_32px_-24px_rgb(15_76_129/0.3)] sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1fr_1.3fr] xl:gap-0">
+    <section aria-label="چرا استادکاران" className="page-container pb-8 xl:-mt-2">
+      <ul className="grid grid-cols-1 gap-1 rounded-3xl border border-border bg-surface p-2 shadow-[0_12px_32px_-24px_rgb(15_76_129/0.3)] sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1.5fr_1.4fr] xl:gap-0">
         {items.map(({ icon: Icon, lines }) => (
           <li
             key={lines[0]}
@@ -24,7 +24,7 @@ export function HeroTrustBar() {
             </span>
             <span className="text-sm/6 font-medium text-foreground xl:flex xl:min-h-12 xl:flex-col xl:justify-center">
               {lines.map((line, i) => (
-                <span key={i} className="xl:block">
+                <span key={i} className="xl:block xl:whitespace-nowrap">
                   {i > 0 && " "}
                   {line}
                 </span>
@@ -36,8 +36,8 @@ export function HeroTrustBar() {
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
             <MouseIcon className="size-5" />
           </span>
-          <span className="text-[0.8125rem]/6 text-foreground xl:flex xl:min-h-12 xl:flex-col xl:justify-center">
-            <span className="xl:block">با حرکت موس روی هر دستگاه</span> <span className="xl:block">خدمات مربوط به آن را ببینید</span>
+          <span className="text-sm/6 text-foreground xl:flex xl:min-h-12 xl:flex-col xl:justify-center">
+            <span className="xl:block xl:whitespace-nowrap">با حرکت موس روی هر دستگاه</span> <span className="xl:block xl:whitespace-nowrap">خدمات مربوط به آن را ببینید</span>
           </span>
         </li>
       </ul>

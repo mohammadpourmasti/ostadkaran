@@ -27,7 +27,7 @@ const imageProps = {
  */
 export function HeroTechnician() {
   return (
-    <div className="pointer-events-none absolute isolate select-none xl:-translate-x-[3%]" style={boxStyle}>
+    <div className="pointer-events-none absolute isolate select-none md:-translate-y-2 xl:-translate-y-4" style={boxStyle}>
       <svg aria-hidden="true" width="0" height="0" className="absolute">
         <filter id={FILTER_ID} colorInterpolationFilters="sRGB">
           <feColorMatrix
