@@ -46,6 +46,9 @@ export function ServicePage({ service }: { service: Service }) {
   const appliance = appliances.find((item) => item.id === service.id);
   const requestHref = repairRequestHref(service);
   const otherServices = services.filter((item) => item.id !== service.id);
+  // Device photos are 4:3, so they keep their full frame on mobile; the technician photo stays 3:2.
+  const headerPhoto = service.image ?? technicianPhoto;
+  const isDevicePhoto = service.image !== undefined;
 
   return (
     <main className="flex-1">
@@ -75,15 +78,17 @@ export function ServicePage({ service }: { service: Service }) {
             </ul>
           </div>
 
-          <div className="relative aspect-[3/2] sm:max-h-[26rem] lg:aspect-auto lg:max-h-none lg:min-h-[26rem]">
+          <div
+            className={`relative sm:max-h-[26rem] lg:aspect-auto lg:max-h-none lg:min-h-[26rem] ${isDevicePhoto ? "aspect-[4/3]" : "aspect-[3/2]"}`}
+          >
             <Image
-              src={technicianPhoto.src}
-              alt={technicianPhoto.alt}
+              src={headerPhoto.src}
+              alt={headerPhoto.alt}
               fill
               sizes="(min-width: 1280px) 608px, (min-width: 1024px) 50vw, 100vw"
               loading="eager"
               fetchPriority="high"
-              className="object-cover object-[88%_center]"
+              className={`object-cover ${isDevicePhoto ? "object-center" : "object-[88%_center]"}`}
             />
           </div>
         </header>

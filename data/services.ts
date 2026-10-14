@@ -12,6 +12,10 @@ export const services: readonly Service[] = [
   {
     id: "washing-machine",
     slug: "washing-machine-repair",
+    image: {
+      src: "/images/services/washing-machine-repair.jpg",
+      alt: "تکنسین استادکاران در حال بررسی لوله تخلیه آب ماشین لباسشویی درب از جلو",
+    },
     navTitle: "تعمیر ماشین لباسشویی",
     h1: "تعمیر ماشین لباسشویی در اراک",
     metaTitle: "تعمیر ماشین لباسشویی در اراک",
@@ -61,6 +65,10 @@ export const services: readonly Service[] = [
   {
     id: "refrigerator",
     slug: "refrigerator-repair",
+    image: {
+      src: "/images/services/refrigerator-repair.jpg",
+      alt: "تکنسین استادکاران در حال تعمیر کمپرسور یخچال استیل در آشپزخانه",
+    },
     navTitle: "تعمیر یخچال",
     h1: "تعمیر یخچال و فریزر در اراک",
     metaTitle: "تعمیر یخچال و فریزر در اراک",
@@ -107,6 +115,10 @@ export const services: readonly Service[] = [
   {
     id: "dishwasher",
     slug: "dishwasher-repair",
+    image: {
+      src: "/images/services/dishwasher-repair.jpg",
+      alt: "تکنسین استادکاران در حال تعمیر بخش داخلی ماشین ظرفشویی توکار در آشپزخانه",
+    },
     navTitle: "تعمیر ماشین ظرفشویی",
     h1: "تعمیر ماشین ظرفشویی در اراک",
     metaTitle: "تعمیر ماشین ظرفشویی در اراک",
@@ -154,6 +166,10 @@ export const services: readonly Service[] = [
   {
     id: "television",
     slug: "television-repair",
+    image: {
+      src: "/images/services/television-repair.webp",
+      alt: "تکنسین استادکاران در حال بررسی برد داخلی پشت تلویزیون ال‌سی‌دی روی میز در اتاق نشیمن",
+    },
     navTitle: "تعمیر تلویزیون",
     h1: "تعمیر تلویزیون ال‌سی‌دی و ال‌ای‌دی در اراک",
     metaTitle: "تعمیر تلویزیون ال‌سی‌دی و ال‌ای‌دی در اراک",
@@ -200,6 +216,10 @@ export const services: readonly Service[] = [
   {
     id: "stove",
     slug: "stove-oven-repair",
+    image: {
+      src: "/images/services/stove-repair.jpg",
+      alt: "تکنسین استادکاران در حال تعمیر مشعل اجاق گاز استیل با فر در آشپزخانه",
+    },
     navTitle: "تعمیر اجاق گاز و فر",
     h1: "تعمیر اجاق گاز و فر در اراک",
     metaTitle: "تعمیر اجاق گاز و فر در اراک",
@@ -248,6 +268,10 @@ export const services: readonly Service[] = [
   {
     id: "vacuum-cleaner",
     slug: "vacuum-cleaner-repair",
+    image: {
+      src: "/images/services/vacuum-cleaner-repair.jpg",
+      alt: "تکنسین استادکاران در حال تعمیر موتور جاروبرقی مخزن‌دار روی کف اتاق نشیمن",
+    },
     navTitle: "تعمیر جارو شارژی و جاروبرقی",
     h1: "تعمیر جارو شارژی و جاروبرقی در اراک",
     metaTitle: "تعمیر جارو شارژی و جاروبرقی در اراک",
@@ -294,6 +318,10 @@ export const services: readonly Service[] = [
   {
     id: "air-conditioner",
     slug: "air-conditioner-repair",
+    image: {
+      src: "/images/services/air-conditioner-repair.jpg",
+      alt: "تکنسین استادکاران در حال تعمیر کولر گازی دیواری روی نردبان در اتاق نشیمن",
+    },
     navTitle: "تعمیر کولر گازی",
     h1: "تعمیر کولر گازی در اراک",
     metaTitle: "تعمیر کولر گازی در اراک",
@@ -340,6 +368,10 @@ export const services: readonly Service[] = [
   {
     id: "other",
     slug: "other-appliance-repair",
+    image: {
+      src: "/images/services/other-appliance-repair.jpg",
+      alt: "تکنسین استادکاران در حال بررسی قطعات داخلی مایکروفر در آشپزخانه",
+    },
     navTitle: "تعمیر سایر لوازم خانگی",
     h1: "تعمیر سایر لوازم برقی خانگی در اراک",
     metaTitle: "تعمیر سایر لوازم برقی خانگی در اراک",

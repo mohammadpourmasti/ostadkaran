@@ -20,6 +20,11 @@
   --brand-foreground: #0f172a;
   --brand-muted: #64748b;
   --brand-border: #e2e8f0;
+
+  /* Baleh button (HSL components, used as hsl(var(--bale))). */
+  --bale: 171 74% 42%;
+  --bale-border: 171 45% 32%;
+  --bale-icon: 168 70% 55%;
 }
 
 @theme inline {
@@ -107,6 +112,28 @@
 }
 
 @layer components {
+  /* Floating Baleh button in the mobile bottom bar. The glow belongs to the button, never to the logo. */
+  .bale-btn-fab {
+    border: 1px solid hsl(var(--bale-border));
+    box-shadow:
+      0 12px 28px -6px rgb(0 0 0 / 0.55),
+      0 0 20px hsl(var(--bale) / 0.35);
+    background: linear-gradient(145deg, #1e4a7a 0%, #0a2221 48%, #1bb89e 100%);
+    transition:
+      opacity 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s,
+      scale 0.2s;
+  }
+
+  .bale-btn-fab:hover {
+    opacity: 0.92;
+    border-color: hsl(var(--bale-icon));
+    box-shadow:
+      0 12px 28px -6px rgb(0 0 0 / 0.55),
+      0 0 20px hsl(var(--bale) / 0.25);
+  }
+
   .hero-backdrop {
     background:
       /* fade into the page below */
@@ -124,6 +151,23 @@
         color-mix(in srgb, var(--color-primary) 4%, var(--color-background)) 0%,
         var(--color-background) 100%
       );
+  }
+
+  /* Phones: the tall hero would crop the artwork to a blank wall slice, so anchor it to the window and plants on
+     the right and drop the text-side wash designed for desktop. */
+  @media (width < 64rem) {
+    .hero-backdrop {
+      background:
+        linear-gradient(180deg, transparent 80%, var(--color-background) 100%),
+        linear-gradient(rgb(248 250 252 / 0.1), rgb(248 250 252 / 0.1)),
+        var(--hero-art) 100% 55% / cover no-repeat,
+        radial-gradient(60% 40% at 50% 40%, rgb(20 184 166 / 0.08), transparent 70%),
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--color-primary) 4%, var(--color-background)) 0%,
+          var(--color-background) 100%
+        );
+    }
   }
 }
 

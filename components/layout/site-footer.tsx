@@ -18,7 +18,7 @@ function ColumnHeading({ children }: { children: string }) {
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#0b2942] text-white">
+    <footer className="bg-[#0b2942] pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-white lg:pb-0">
       <div className="page-container grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1.2fr_1.4fr] lg:gap-8 lg:py-8">
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo onDark />

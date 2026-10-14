@@ -1,3 +1,5 @@
+import { servicePath, services } from "@/data/services";
+
 export type NavItem = {
   label: string;
   href: string;
@@ -30,3 +32,14 @@ export const footerNavigation: readonly NavItem[] = [
   ...mainNavigation.slice(3),
   { label: "درخواست تعمیر", href: "/repair-request" },
 ];
+
+// Dropdown / mobile service list, derived from the real service pages so links are never defined twice.
+export const serviceNavigation: readonly NavItem[] = services.map((service) => ({
+  label: service.navTitle,
+  href: servicePath(service),
+}));
+
+// Same target the "خدمات" item in mainNavigation points to; used as the "all services" link.
+export const servicesOverviewHref = mainNavigation[0].href;
+
+export const homeNavigation: NavItem = { label: "صفحه اصلی", href: "/" };

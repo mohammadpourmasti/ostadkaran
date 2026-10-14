@@ -21,4 +21,9 @@ export type Service = {
   beforeCalling: readonly string[];
   // Optional safety notice shown beside the checklist.
   safetyNote?: string;
+  // Optional device photo for the header; pages without it show the shared technician photo.
+  image?: {
+    src: string;
+    alt: string;
+  };
 };

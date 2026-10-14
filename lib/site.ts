@@ -74,5 +74,9 @@ export const siteConfig = {
   links: {
     // Every repair CTA links here. Online submission is not connected yet (see components/repair-request).
     repairRequest: "/repair-request",
+    // Baleh (بله) public username of the business account (e.g. "ostadkaran"), without "@". Baleh has no verified
+    // link format that opens a chat from a phone number, so until this is set the mobile bar's center button opens
+    // Baleh's official site (https://ble.ir), which hands off to the app.
+    balehUsername: undefined as string | undefined,
   },
 } as const;

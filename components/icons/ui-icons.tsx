@@ -102,3 +102,42 @@ export function ClockIcon(props: IconProps) {
     </IconBase>
   );
 }
+
+export function HomeIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M4 11 12 4l8 7" />
+      <path d="M6 9.75V19a1 1 0 0 0 1 1h3.25v-5.5h3.5V20H17a1 1 0 0 0 1-1V9.75" />
+    </IconBase>
+  );
+}
+
+export function GridIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" />
+      <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" />
+      <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" />
+    </IconBase>
+  );
+}
+
+export function ClipboardIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <rect x="5.5" y="4.5" width="13" height="16" rx="2" />
+      <path d="M9 4.5V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v.5" />
+      <path d="M9 11h6M9 15h4" />
+    </IconBase>
+  );
+}
+
+// Generic chat bubble. Stand-in until the official Baleh logo asset is added to the project.
+export function ChatIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M20 11.5a7.5 7.5 0 0 1-10.9 6.7L4.5 19.5l1.3-4.4A7.5 7.5 0 1 1 20 11.5Z" />
+    </IconBase>
+  );
+}
