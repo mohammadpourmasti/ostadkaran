@@ -23,6 +23,7 @@ export const mainNavigation: readonly NavItem[] = [
   { label: "درباره ما", href: `/#${sectionIds.about}` },
   { label: "سوالات متداول", href: `/#${sectionIds.faq}` },
   { label: "تماس با ما", href: `/#${sectionIds.contact}` },
+  { label: "راهنمای کدهای خطا", href: "/error-codes" },
 ];
 
 // Footer: the main items plus sections that are too minor for the header.
@@ -40,6 +41,7 @@ export const serviceNavigation: readonly NavItem[] = services.map((service) => (
 }));
 
 // Same target the "خدمات" item in mainNavigation points to; used as the "all services" link.
-export const servicesOverviewHref = mainNavigation[0].href;
+export const servicesOverviewHref = "/services";
+
 
 export const homeNavigation: NavItem = { label: "صفحه اصلی", href: "/" };

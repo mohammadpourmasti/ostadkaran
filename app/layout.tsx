@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
+import { PublicChrome } from "@/components/layout/public-chrome";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MobileBottomNav } from "@/components/navigation/mobile-bottom-nav";
+import { FloatingCallButton } from "@/components/navigation/floating-call-button";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -62,10 +64,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd).replace(/</g, "\\u003c") }}
         />
-        <SiteHeader />
+        <PublicChrome>
+          <SiteHeader />
+        </PublicChrome>
         {children}
-        <SiteFooter />
-        <MobileBottomNav />
+        <PublicChrome>
+          <SiteFooter />
+          <MobileBottomNav />
+          <FloatingCallButton />
+        </PublicChrome>
       </body>
     </html>
   );

@@ -4,8 +4,8 @@ import { RepairRequestCta } from "@/components/ui/repair-request-cta";
 import { Logo } from "./logo";
 
 export function SiteHeader() {
-  return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur-md">
+  return (<header className="relative z-40 border-b border-border bg-surface/90 backdrop-blur-md lg:sticky lg:top-0">
+    
       <div className="page-container flex h-14 items-center gap-3 lg:gap-6">
         <div>
           <Logo />
