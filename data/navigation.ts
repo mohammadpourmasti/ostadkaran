@@ -29,6 +29,7 @@ export const mainNavigation: readonly NavItem[] = [
 // Footer: the main items plus sections that are too minor for the header.
 export const footerNavigation: readonly NavItem[] = [
   ...mainNavigation.slice(0, 3),
+  { label: "بنیان‌گذار و مسئول فنی", href: "/about/founder" },
   { label: "مناطق خدمات", href: `/#${sectionIds.serviceAreas}` },
   ...mainNavigation.slice(3),
   { label: "درخواست تعمیر", href: "/repair-request" },

@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDownIcon } from "@/components/icons/ui-icons";
-import { mainNavigation, serviceNavigation, servicesOverviewHref } from "@/data/navigation";
+import { mainNavigation, sectionIds, serviceNavigation, servicesOverviewHref } from "@/data/navigation";
 
 const itemClass =
   "rounded-lg px-2.5 py-1.5 text-[0.9375rem] font-medium text-foreground/75 transition-colors hover:bg-primary/5 hover:text-primary";
 
-// The item pointing at the services overview opens a dropdown of the real service pages.
+// The "خدمات" item (/#services) opens a dropdown of the real service pages; its footer link goes to the overview.
 function ServicesDropdown({ label }: { label: string }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
@@ -106,7 +106,7 @@ export function DesktopNav() {
     <nav aria-label="منوی اصلی" className="hidden lg:block">
       <ul className="flex items-center gap-0.5">
         {mainNavigation.map((item) =>
-          item.href === servicesOverviewHref ? (
+          item.href === `/#${sectionIds.services}` ? (
             <ServicesDropdown key={item.href} label={item.label} />
           ) : (
             <li key={item.href}>
