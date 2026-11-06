@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ComponentType } from "react";
 import type { IconProps } from "@/components/icons/icon-base";
 import { CheckCircleIcon, UserIcon, WrenchIcon } from "@/components/icons/ui-icons";
@@ -34,6 +35,13 @@ export function AboutSection() {
             استادکاران مجموعه‌ای در اراک برای تعمیر و نصب لوازم خانگی است. با ۳۲ سال سابقه، دستگاه‌های ایرانی و خارجی را
             بررسی و تعمیر می‌کنیم و هزینه را پیش از شروع کار اعلام می‌کنیم.
           </p>
+          <Link
+            href="/about/founder"
+            className="mt-3 inline-flex min-h-11 items-center gap-1 text-sm font-bold text-accent-strong transition-colors hover:text-primary sm:text-base"
+          >
+            بنیان‌گذار و مسئول فنی
+            <span aria-hidden="true">←</span>
+          </Link>
         </header>
 
         <ul className="grid gap-3 sm:grid-cols-3 lg:gap-4">

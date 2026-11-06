@@ -40,6 +40,10 @@ export function HeroTrustBar() {
             <span className="xl:block xl:whitespace-nowrap">با حرکت موس روی هر دستگاه</span> <span className="xl:block xl:whitespace-nowrap">خدمات مربوط به آن را ببینید</span>
           </span>
         </li>
+        <li className="col-span-full flex items-center justify-center gap-2 rounded-2xl border border-border bg-accent/[0.06] px-4 py-2.5 text-center text-sm/6 font-bold text-primary xl:mt-2">
+          <UserIcon aria-hidden="true" className="hidden size-4 shrink-0 text-accent sm:block" />
+          <span>۳۲ سال سابقه، مدرس فنی و حرفه‌ای، کارشناس صدا و سیما</span>
+        </li>
       </ul>
     </section>
   );
