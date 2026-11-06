@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getErrorCodeCategory } from "@/data/error-codes/categories";
 import { VerificationBadge } from "@/components/error-codes/verification-badge";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
+import { isCodeIndexable } from "@/lib/error-codes/visibility";
 import { siteConfig } from "@/lib/site";
 
 type Props = {
@@ -39,10 +40,10 @@ export async function generateMetadata({
     alternates: {
       canonical: `/error-codes/${category}/${id}`,
     },
-    robots:
-      item.verification_level === "verified"
-        ? { index: true, follow: true }
-        : { index: false, follow: true },
+    // Same rule as the sitemap: every public (published, verified or partially verified) record is indexable.
+    robots: isCodeIndexable(item.verification_level)
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
     openGraph: {
       type: "article",
       locale: siteConfig.locale,

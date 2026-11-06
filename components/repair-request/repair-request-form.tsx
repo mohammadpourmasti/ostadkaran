@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, type ReactNode } from "react";
+import { issueRepairFormToken } from "@/actions/repair-form-token";
 import { submitRepairRequest, type RepairRequestState } from "@/actions/submit-repair-request";
 import { appliances } from "@/data/appliances";
 import { brandOptions } from "@/data/brands";
@@ -29,11 +30,13 @@ function Field({
   label,
   error,
   className = "",
+  optional = false,
   children,
 }: {
   id: string;
   label: string;
   error?: string;
+  optional?: boolean;
   className?: string;
   children: ReactNode;
 }) {
@@ -41,9 +44,11 @@ function Field({
     <div className={className}>
       <label htmlFor={id} className="text-sm font-semibold text-foreground">
         {label}
-        <span aria-hidden="true" className="ms-1 text-cta">
-          *
-        </span>
+        {!optional && (
+          <span aria-hidden="true" className="ms-1 text-cta">
+            *
+          </span>
+        )}
       </label>
       {children}
       {error && (
@@ -58,11 +63,22 @@ function Field({
 export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: ApplianceId }) {
   const [state, formAction, pending] = useActionState(submitRepairRequest, initialState);
   const formRef = useRef<HTMLFormElement>(null);
-  // When the form was shown; sent with each submission so the server can enforce a minimum fill time.
-  const startedAt = useRef(0);
+  // Server-signed token (proves when the form was loaded); sent with each submission. It is requested when the
+  // form appears and again after a failed submission that shows a general message.
+  const formToken = useRef("");
+
+  function refreshFormToken() {
+    issueRepairFormToken()
+      .then((result) => {
+        formToken.current = result.token ?? "";
+      })
+      .catch(() => {
+        formToken.current = "";
+      });
+  }
 
   useEffect(() => {
-    startedAt.current = Date.now();
+    refreshFormToken();
   }, []);
 
   const errors = state.status === "error" ? state.errors : {};
@@ -71,6 +87,8 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
   // Move focus to the first invalid field after a failed submission.
   useEffect(() => {
     if (state.status !== "error") return;
+    // A general error (rate limit, expired form, ...) needs a fresh token for the next attempt.
+    if (state.message) refreshFormToken();
     const first = fieldOrder.find((field) => state.errors[field]);
     if (first) formRef.current?.querySelector<HTMLElement>(`#rr-${first}`)?.focus();
   }, [state]);
@@ -106,7 +124,7 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
       ref={formRef}
       noValidate
       action={(formData) => {
-        formData.set("startedAt", String(startedAt.current));
+        formData.set("formToken", formToken.current);
         return formAction(formData);
       }}
       className="rounded-3xl border border-border bg-surface p-5 sm:p-7"
@@ -161,7 +179,7 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
           </select>
         </Field>
 
-        <Field id="rr-brand" label="برند دستگاه (اختیاری)" error={errors.brand}>
+        <Field id="rr-brand" label="برند دستگاه (اختیاری)" error={errors.brand} optional>
           <select {...fieldProps("brand")} defaultValue={values.brand || ""}>
             <option value="">انتخاب نمی‌کنم</option>
             {brandOptions.map((option) => (

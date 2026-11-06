@@ -11,7 +11,7 @@ export default async function SettingsPage() {
 
   return (
     <>
-      <PageHeader title="تنظیمات" description="اطلاعات حساب شما. مدیریت کارکنان در نسخه‌های بعد اضافه می‌شود." />
+      <PageHeader title="تنظیمات" description="اطلاعات حساب شما. مدیر می‌تواند تکنسین‌ها را از بخش مدیریت کارکنان (/admin/staff) تعریف و مدیریت کند." />
 
       <section className="max-w-xl rounded-2xl border border-border bg-surface p-5 shadow-sm">
         <dl className="grid gap-4 text-sm sm:grid-cols-2">
