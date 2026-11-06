@@ -1,8 +1,10 @@
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getErrorCodeCategory } from "@/data/error-codes/categories";
+import { categoryBanners } from "@/data/error-codes/category-images";
 import { CategoryMedia } from "@/components/error-codes/category-media";
 import { VerificationBadge } from "@/components/error-codes/verification-badge";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
@@ -23,7 +25,7 @@ export async function generateMetadata({
   const c = getErrorCodeCategory(id);
   if (!c) return {};
 
-  // Thin pages stay out of search results: indexable only with enough verified codes. If the database
+  // Thin pages stay out of search results: indexable only with enough public codes. If the database
   // cannot be read, stay on the safe side and do not index.
   let indexable = false;
   try {
@@ -56,7 +58,9 @@ export default async function ErrorCodeCategoryPage({ params }: Props) {
   const c = getErrorCodeCategory(id);
   if (!c) notFound();
 
-  // Indexable pages show verified codes only; noindex pages may also show partially verified ones (with badge).
+  const banner = categoryBanners[id];
+
+  // Public codes (verified and partially verified, each with its badge); indexing is decided in generateMetadata.
   const { rows: errorCodes } = selectCategoryPageRows(await getPublishedErrorCodes(id));
 
   return (
@@ -69,8 +73,33 @@ export default async function ErrorCodeCategoryPage({ params }: Props) {
         <span className="font-bold text-foreground">{c.title}</span>
       </nav>
 
-      <header className="overflow-hidden rounded-3xl border border-border bg-white shadow-sm lg:grid lg:grid-cols-[1.1fr_1fr]">
-        <div className="p-6 sm:p-8 lg:p-10 lg:order-1">
+      {/* One banner component: the picture fills the header and the title block sits on it (from lg up, on the
+          picture's empty side; on smaller screens it overlaps a fade at the picture's bottom so the appliance stays
+          fully visible). All text is real HTML. */}
+      <header
+        className={`relative isolate overflow-hidden rounded-3xl border border-border border-b-4 bg-white shadow-sm lg:flex lg:min-h-[20rem] ${banner?.accent ?? "border-b-primary/40"}`}
+      >
+        <div className="relative h-60 w-full sm:h-72 lg:absolute lg:inset-0 lg:h-auto">
+          {banner ? (
+            <Image
+              src={banner.src}
+              alt={`بنر راهنمای خطاهای ${c.title}`}
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              className={`object-cover ${banner.objectClass}`}
+            />
+          ) : (
+            <CategoryMedia categoryId={id} title={c.title} priority sizes="(max-width: 1280px) 100vw, 1200px" className="h-full w-full" />
+          )}
+          {/* Readability layer: fades to white at the bottom (small screens) or toward the text side (lg+). */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-t from-white via-white/55 via-35% to-transparent lg:bg-gradient-to-l lg:from-white/95 lg:via-white/80 lg:via-45% lg:to-transparent lg:to-75%"
+          />
+        </div>
+
+        <div className="relative -mt-14 p-6 pt-0 sm:-mt-16 sm:p-8 sm:pt-0 lg:mt-0 lg:flex lg:w-[58%] lg:flex-col lg:justify-center lg:p-10">
           <span className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-1.5 text-xs font-bold text-primary">
             مرکز راهنمای کدهای خطا
           </span>
@@ -88,14 +117,6 @@ export default async function ErrorCodeCategoryPage({ params }: Props) {
             ))}
           </div>
         </div>
-        {/* Mobile: image strip above the text. Desktop: image column beside it. No text sits on the photo. */}
-        <CategoryMedia
-          categoryId={id}
-          title={c.title}
-          priority
-          sizes="(max-width: 1024px) 100vw, 560px"
-          className="order-first aspect-[16/9] w-full sm:aspect-[21/9] lg:order-2 lg:aspect-auto lg:h-full lg:min-h-72"
-        />
       </header>
 
       <section className="mx-auto max-w-5xl py-8 sm:py-10">

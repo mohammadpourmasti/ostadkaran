@@ -142,13 +142,19 @@ export function ErrorCodeGuide() {
           معنی کدها ممکن است با توجه به برند و مدل متفاوت باشد.
         </p>
 
-        <label htmlFor="error-code-search" className="w-full max-w-lg">
+        <label htmlFor="error-code-search" className="mt-5 block text-xs font-bold text-[#0F4C81] sm:text-sm">
           جست‌وجوی نوع وسیله یا کد خطا
         </label>
 
-        <div className="mt-5 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-lg focus-within:border-[#14B8A6]">
-          <span aria-hidden="true" className="px-2 text-2xl text-[#0F4C81]">
-            ⌕
+        <div className="mt-2 flex h-14 w-full max-w-md items-center gap-2 rounded-2xl border border-slate-200 bg-white/95 px-2 shadow-lg focus-within:border-[#14B8A6] focus-within:ring-2 focus-within:ring-[#14B8A6]/25">
+          <span
+            aria-hidden="true"
+            className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#14B8A6]/10 text-[#0D9488]"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="size-5">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="m20 20-3.8-3.8" />
+            </svg>
           </span>
 
           <input
@@ -156,14 +162,14 @@ export function ErrorCodeGuide() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="نام وسیله یا کد خطا را وارد کنید"
-            className="min-w-0 flex-1 bg-transparent px-1 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 sm:text-base"
+            className="h-full min-w-0 flex-1 bg-transparent px-1 text-sm text-slate-800 outline-none placeholder:text-slate-400 sm:text-base"
           />
 
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="shrink-0 rounded-xl px-3 py-2 text-sm font-bold text-[#0F4C81] hover:bg-sky-50"
+              className="shrink-0 rounded-xl px-3 py-2 text-sm font-bold text-[#0D9488] hover:bg-teal-50"
             >
               پاک‌کردن
             </button>
@@ -239,12 +245,20 @@ export function ErrorCodeGuide() {
                       </p>
 
                       {category && (
-                        <Link
-                          href={`/error-codes/${category.id}`}
-                          className="mt-3 inline-flex text-sm font-bold text-primary hover:text-accent-strong"
-                        >
-                          مشاهده راهنمای {category.title} ←
-                        </Link>
+                        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                          <Link
+                            href={`/error-codes/${category.id}/${item.id}`}
+                            className="inline-flex text-sm font-bold text-primary hover:text-accent-strong"
+                          >
+                            مشاهده جزئیات خطای {item.error_code} ←
+                          </Link>
+                          <Link
+                            href={`/error-codes/${category.id}`}
+                            className="inline-flex text-sm font-medium text-muted underline-offset-4 hover:text-primary hover:underline"
+                          >
+                            راهنمای {category.title}
+                          </Link>
+                        </div>
                       )}
                     </article>
                   );
