@@ -9,7 +9,7 @@ const points: readonly { icon: ComponentType<IconProps>; title: string; text: st
   {
     icon: UserIcon,
     title: "۳۲ سال سابقه",
-    text: "تعمیر و نصب لوازم خانگی با تجربه‌ای ۳۲ ساله.",
+    text: "تعمیر و نصب لوازم خانگی با تجربه‌ای ۳۲ ساله، همراه با سابقه تدریس در سازمان فنی و حرفه‌ای.",
   },
   {
     icon: WrenchIcon,
@@ -37,7 +37,7 @@ export function AboutSection() {
           </p>
           <Link
             href="/about/founder"
-            className="mt-3 inline-flex min-h-11 items-center gap-1 text-sm font-bold text-accent-strong transition-colors hover:text-primary sm:text-base"
+            className="mt-3 inline-flex min-h-11 items-center gap-1 text-base font-extrabold text-accent-strong transition-colors hover:text-primary sm:text-lg"
           >
             بنیان‌گذار و مسئول فنی
             <span aria-hidden="true">←</span>

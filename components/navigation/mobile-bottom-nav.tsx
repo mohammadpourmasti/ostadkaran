@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { ChevronDownIcon, ClipboardIcon, GridIcon, HomeIcon, PhoneIcon } from "@/components/icons/ui-icons";
-import { homeNavigation, mainNavigation, serviceNavigation, servicesOverviewHref } from "@/data/navigation";
+import { ChevronDownIcon, ClipboardIcon, ErrorGuideIcon, GridIcon, HomeIcon, PhoneIcon } from "@/components/icons/ui-icons";
+import { homeNavigation, serviceNavigation, servicesOverviewHref } from "@/data/navigation";
 import { siteConfig } from "@/lib/site";
 
-type Item = { key: string; label: string; href: string; icon: ReactNode; active: boolean };
+type Item = { key: string; label: string; href: string; icon: ReactNode; active: boolean; wrap?: boolean };
 
 const itemClass =
   "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-full px-0.5 text-[0.6875rem] leading-tight font-medium whitespace-nowrap transition-colors focus-visible:outline-offset-[-2px]";
@@ -45,7 +45,6 @@ export function MobileBottomNav() {
     };
   }, [servicesOpen]);
 
-  const contactHref = mainNavigation.find((item) => item.label === "تماس با ما")?.href ?? "/";
   // The center button was a Baleh link, but no official Baleh account is confirmed, so it is a direct call to the
   // main number instead (tel: link from siteConfig). Switch back only once a verified Baleh account exists.
   const callHref = siteConfig.contact.phone.href;
@@ -62,7 +61,14 @@ export function MobileBottomNav() {
       icon: <ClipboardIcon className="size-6" />,
       active: pathname.startsWith(siteConfig.links.repairRequest),
     },
-    { key: "contact", label: "تماس با ما", href: contactHref, icon: <PhoneIcon className="size-6" />, active: false },
+    {
+      key: "error-codes",
+      label: "راهنمای کدهای خطا",
+      href: "/error-codes",
+      icon: <ErrorGuideIcon className="size-6" />,
+      active: pathname.startsWith("/error-codes"),
+      wrap: true,
+    },
   ];
 
   const renderItem = (item: Item) => (
@@ -70,7 +76,7 @@ export function MobileBottomNav() {
       <Link
         href={item.href}
         aria-current={item.active ? "page" : undefined}
-        className={`${itemClass} w-full ${item.active ? "bg-accent/15 font-bold text-white" : "text-accent hover:text-white"}`}
+        className={`${item.wrap ? itemClass.replace("whitespace-nowrap", "text-center whitespace-normal") : itemClass} w-full ${item.active ? "bg-accent/15 font-bold text-white" : "text-accent hover:text-white"}`}
       >
         {item.icon}
         {item.label}
@@ -107,6 +113,12 @@ export function MobileBottomNav() {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/error-codes"
+              className="mt-1 flex min-h-11 items-center rounded-xl px-3 py-2 text-sm font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white"
+            >
+              راهنمای کدهای خطا
+            </Link>
             <Link
               href={servicesOverviewHref}
               className="mt-2 flex min-h-11 items-center justify-center rounded-xl border-t border-white/10 px-3 pt-2 text-sm font-semibold text-accent transition-colors hover:text-white"

@@ -141,3 +141,13 @@ export function ChatIcon(props: IconProps) {
     </IconBase>
   );
 }
+
+// Error-code guide: a warning triangle with an exclamation mark.
+export function ErrorGuideIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M10.3 4.2 3.2 16.5A2 2 0 0 0 5 19.5h14a2 2 0 0 0 1.8-3L13.7 4.2a2 2 0 0 0-3.4 0Z" />
+      <path d="M12 9.5v4M12 16.4v.1" />
+    </IconBase>
+  );
+}
