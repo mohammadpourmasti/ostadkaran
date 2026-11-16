@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# backups
+*.bak
+
+# original (pre-optimisation) images; kept outside Git on purpose
+assets-original/
