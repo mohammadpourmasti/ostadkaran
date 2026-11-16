@@ -27,13 +27,28 @@ export function serviceJsonLd(service: Service) {
   };
 }
 
+// Same trail as the visible breadcrumb: خانه ← خدمات ← the service.
+export const servicesHubUrl = `${siteConfig.url}/services`;
+
+export function servicesHubBreadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "خانه", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "خدمات", item: servicesHubUrl },
+    ],
+  };
+}
+
 export function breadcrumbJsonLd(service: Service) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "خانه", item: siteConfig.url },
-      { "@type": "ListItem", position: 2, name: service.navTitle, item: serviceUrl(service) },
+      { "@type": "ListItem", position: 2, name: "خدمات", item: servicesHubUrl },
+      { "@type": "ListItem", position: 3, name: service.navTitle, item: serviceUrl(service) },
     ],
   };
 }

@@ -6,7 +6,8 @@ import { getErrorCodeCategory } from "@/data/error-codes/categories";
 import { VerificationBadge } from "@/components/error-codes/verification-badge";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
 import { isCodeIndexable } from "@/lib/error-codes/visibility";
-import { siteConfig } from "@/lib/site";
+import { truncateAtWord } from "@/lib/seo/text";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 type Props = {
   params: Promise<{ category: string; id: string }>;
@@ -32,7 +33,8 @@ export async function generateMetadata({
   if (!item) return {};
 
   const title = `${item.error_code} ${item.title} ${item.brand}`;
-  const description = `${item.meaning.slice(0, 145)} | راهنمای کدهای خطای ${c.title}`;
+  const suffix = ` | راهنمای کدهای خطای ${c.title}`;
+  const description = `${truncateAtWord(item.meaning, Math.max(60, 155 - suffix.length))}${suffix}`;
 
   return {
     title,
@@ -48,6 +50,7 @@ export async function generateMetadata({
       type: "article",
       locale: siteConfig.locale,
       siteName: siteConfig.name,
+      images: defaultOgImages,
       title,
       description,
       url: `/error-codes/${category}/${id}`,
@@ -249,7 +252,7 @@ export default async function ErrorCodeDetailPage({ params }: Props) {
               خدمات تعمیر {c.title}
             </Link>
             <Link
-              href="/repair-request"
+              href={`/repair-request?appliance=${c.id}`}
               className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#F59E0B] px-6 py-3 text-sm font-bold text-slate-950 hover:bg-amber-400"
             >
               ثبت درخواست تعمیر

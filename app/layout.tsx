@@ -4,8 +4,7 @@ import { PublicChrome } from "@/components/layout/public-chrome";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { MobileBottomNav } from "@/components/navigation/mobile-bottom-nav";
-import { FloatingCallButton } from "@/components/navigation/floating-call-button";
-import { siteConfig } from "@/lib/site";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 import "./globals.css";
 
 const vazirmatn = Vazirmatn({
@@ -26,10 +25,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
+    images: defaultOgImages,
   },
+  twitter: { card: "summary_large_image" },
 };
 
-// One LocalBusiness record built from siteConfig. No geo, postal code or opening-hours spec: those are unconfirmed.
+// One LocalBusiness record built from siteConfig. Only confirmed data is included.
+// TODO(owner) - add when real values are confirmed (do not guess):
+//   openingHoursSpecification (hours are "۸ صبح تا ۱۰ شب"; the days of the week are unconfirmed),
+//   geo (latitude/longitude of the office), image/logo (a real photo or logo URL), priceRange,
+//   sameAs (official Instagram/Google Business/other profile URLs), postalCode.
 const businessJsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
@@ -71,7 +76,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <PublicChrome>
           <SiteFooter />
           <MobileBottomNav />
-          <FloatingCallButton />
         </PublicChrome>
       </body>
     </html>

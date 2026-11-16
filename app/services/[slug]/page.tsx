@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/seo/json-ld";
 import { ServicePage } from "@/components/services/service-page";
 import { getServiceBySlug, servicePath, services } from "@/data/services";
+import { faqJsonLd } from "@/lib/seo/faq-schema";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/service-schema";
-import { siteConfig } from "@/lib/site";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 // Only the eight known slugs exist; anything else is a 404.
 export const dynamicParams = false;
@@ -28,6 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/services/[slug]">
       type: "website",
       locale: siteConfig.locale,
       siteName: siteConfig.name,
+      images: defaultOgImages,
       title: `${service.metaTitle} | ${siteConfig.name}`,
       description: service.metaDescription,
       url: path,
@@ -44,6 +46,7 @@ export default async function ServiceRoute({ params }: PageProps<"/services/[slu
     <>
       <JsonLd data={serviceJsonLd(service)} />
       <JsonLd data={breadcrumbJsonLd(service)} />
+      {service.faqs.length > 0 && <JsonLd data={faqJsonLd(service.faqs)} />}
       <ServicePage service={service} />
     </>
   );

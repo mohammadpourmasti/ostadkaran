@@ -4,11 +4,13 @@ import { HeroTrustBar } from "@/components/hero/hero-trust-bar";
 import { AboutSection } from "@/components/home/about-section";
 import { BrandsSection } from "@/components/home/brands-section";
 import { ContactSection } from "@/components/home/contact-section";
-import { FaqSection } from "@/components/home/faq-section";
+import { FaqSection, faqs } from "@/components/home/faq-section";
 import { RepairProcess } from "@/components/home/RepairProcess/RepairProcess";
 import { ServiceAreasSection } from "@/components/home/service-areas-section";
+import { JsonLd } from "@/components/seo/json-ld";
 import { sectionIds } from "@/data/navigation";
-import { siteConfig } from "@/lib/site";
+import { faqJsonLd } from "@/lib/seo/faq-schema";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: siteConfig.title },
@@ -19,6 +21,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
+    images: defaultOgImages,
     title: siteConfig.title,
     description: siteConfig.description,
     url: "/",
@@ -38,6 +41,7 @@ export default function Home() {
       <BrandsSection />
       <ServiceAreasSection />
       <FaqSection />
+      <JsonLd data={faqJsonLd(faqs)} />
       <ContactSection />
     </main>
   );

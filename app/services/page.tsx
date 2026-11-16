@@ -2,7 +2,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { services, servicePath } from "@/data/services";
+import { servicesHubBreadcrumbJsonLd } from "@/lib/seo/service-schema";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "خدمات تعمیرات لوازم خانگی در اراک | استادکاران",
@@ -11,11 +15,24 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/services",
   },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+    title: "خدمات تعمیرات لوازم خانگی در اراک | استادکاران",
+    description:
+      "مشاهده خدمات تعمیر و نصب لوازم خانگی در اراک؛ از تعمیر ماشین لباسشویی و یخچال تا ظرف‌شویی، تلویزیون و سایر لوازم.",
+    url: "/services",
+    images: defaultOgImages,
+  },
 };
 
 export default function ServicesPage() {
   return (
     <main className="page-container py-8 sm:py-12">
+      <JsonLd data={servicesHubBreadcrumbJsonLd()} />
+      <Breadcrumbs items={[{ label: "خانه", href: "/" }, { label: "خدمات" }]} />
+
       <section className="mx-auto max-w-3xl text-center">
         <p className="text-sm font-semibold text-primary">
           خدمات استادکاران

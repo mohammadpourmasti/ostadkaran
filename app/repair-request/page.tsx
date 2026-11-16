@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { appliances } from "@/data/appliances";
 import { RepairRequestForm } from "@/components/repair-request/repair-request-form";
 import { PhoneCta } from "@/components/ui/phone-cta";
-import { siteConfig } from "@/lib/site";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 const title = "درخواست تعمیر لوازم خانگی";
 const description =
@@ -12,10 +12,13 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/repair-request" },
+  // A form is not a search destination (and ?appliance=... variants would duplicate it): keep it out of the index.
+  robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
+    images: defaultOgImages,
     title: `${title} | ${siteConfig.name}`,
     description,
     url: "/repair-request",
@@ -33,7 +36,7 @@ export default async function RepairRequestPage({ searchParams }: PageProps<"/re
         <header className="max-w-2xl">
           <h1 className="text-[1.75rem]/[1.6] font-extrabold text-primary sm:text-4xl/[1.5]">درخواست تعمیر</h1>
           <p className="mt-2 text-sm/7 text-muted sm:text-base/8">
-            برای تعمیر و نصب لوازم خانگی، مشکل دستگاه را تلفنی با ما در میان بگذارید. هزینه پیش از تعمیر اعلام می‌شود.
+            برای تعمیر و نصب لوازم خانگی، مشکل دستگاه را تلفنی با ما در میان بگذارید. هزینه پیش از تعمیر اعلام می‌شود و تعمیر با {siteConfig.business.warranty} انجام می‌شود.
           </p>
         </header>
 

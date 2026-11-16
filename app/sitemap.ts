@@ -4,6 +4,7 @@ import { servicePath, services } from "@/data/services";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
 import { isCategoryIndexable, isPubliclyVisible } from "@/lib/error-codes/visibility";
 import { siteConfig } from "@/lib/site";
+import { contentDates } from "@/lib/site-dates";
 
 // Re-evaluated at most every 5 minutes; the error-code entries come from the database.
 export const revalidate = 300;
@@ -72,29 +73,30 @@ async function errorCodeEntries(): Promise<MetadataRoute.Sitemap> {
   ];
 }
 
+// /repair-request is a form, not a landing page: it is noindex (see its metadata) and not listed here.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     {
       url: siteConfig.url,
-      lastModified: new Date(),
+      lastModified: contentDates.home,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${siteConfig.url}${siteConfig.links.repairRequest}`,
-      lastModified: new Date(),
+      url: `${siteConfig.url}/services`,
+      lastModified: contentDates.services,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${siteConfig.url}/about/founder`,
-      lastModified: new Date(),
+      lastModified: contentDates.founder,
       changeFrequency: "yearly",
       priority: 0.5,
     },
     ...services.map((service) => ({
       url: `${siteConfig.url}${servicePath(service)}`,
-      lastModified: new Date(),
+      lastModified: contentDates.services,
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),

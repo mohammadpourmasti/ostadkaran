@@ -3,7 +3,7 @@ import { sectionIds } from "@/data/navigation";
 import { siteConfig } from "@/lib/site";
 
 // Answers only restate client-confirmed facts: no exclusions, arrival times or fees beyond these.
-const faqs: readonly { question: string; answer: string }[] = [
+export const faqs: readonly { question: string; answer: string }[] = [
   {
     question: "چطور درخواست تعمیر بدهم؟",
     answer: `می‌توانید فرم درخواست تعمیر را در همین سایت پر کنید یا با شماره‌های سایت تماس بگیرید.`,

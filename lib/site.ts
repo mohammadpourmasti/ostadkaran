@@ -76,3 +76,16 @@ export const siteConfig = {
     repairRequest: "/repair-request",
   },
 } as const;
+
+// Default Open Graph / Twitter image (1200x630). Pages that define their own `openGraph` replace the layout's
+// object, so each one repeats `images: defaultOgImages`.
+// TODO(owner): replace with a designed share image (logo + name) when one exists; this one is a composite of the
+// existing hero artwork and technician photo, with no text.
+export const defaultOgImages = [
+  {
+    url: "/images/og/og-default.jpg",
+    width: 1200,
+    height: 630,
+    alt: "تکنسین استادکاران در حال تعمیر لوازم خانگی",
+  },
+];

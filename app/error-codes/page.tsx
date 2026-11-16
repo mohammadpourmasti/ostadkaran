@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ErrorCodeGuide } from "@/components/error-codes/error-code-guide";
-import { siteConfig } from "@/lib/site";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   // absolute: the full title already carries the site name, so the layout template must not add it again.
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
+    images: defaultOgImages,
     title: "راهنمای کدهای خطای لوازم خانگی | استادکاران",
     description:
       "جست‌وجو و راهنمایی اولیه برای کدهای خطای لوازم خانگی، با توجه به برند و مدل دستگاه.",

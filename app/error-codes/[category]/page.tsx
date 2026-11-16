@@ -9,7 +9,7 @@ import { CategoryMedia } from "@/components/error-codes/category-media";
 import { VerificationBadge } from "@/components/error-codes/verification-badge";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
 import { selectCategoryPageRows } from "@/lib/error-codes/visibility";
-import { siteConfig } from "@/lib/site";
+import { defaultOgImages, siteConfig } from "@/lib/site";
 
 type Props = { params: Promise<{ category: string }> };
 
@@ -46,6 +46,7 @@ export async function generateMetadata({
       type: "article",
       locale: siteConfig.locale,
       siteName: siteConfig.name,
+      images: defaultOgImages,
       title: `${title} | ${siteConfig.name}`,
       description: c.description,
       url: `/error-codes/${c.id}`,
@@ -226,7 +227,7 @@ export default async function ErrorCodeCategoryPage({ params }: Props) {
                   هنوز کد تأییدشده‌ای برای نمایش عمومی در این دسته نداریم.
                   برای جلوگیری از راهنمایی اشتباه، اطلاعات بررسی‌نشده نمایش داده نمی‌شوند.
                 </p>
-                <Link href="/repair-request" className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary/90">
+                <Link href={`/repair-request?appliance=${c.id}`} className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary/90">
                   درخواست راهنمایی و تعمیر
                 </Link>
               </div>
@@ -247,7 +248,7 @@ export default async function ErrorCodeCategoryPage({ params }: Props) {
           <Link href={c.serviceHref} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white hover:bg-primary/90">
             خدمات تعمیر {c.title}
           </Link>
-          <Link href="/repair-request" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border bg-white px-5 py-3 text-sm font-bold text-foreground hover:border-primary/40">
+          <Link href={`/repair-request?appliance=${c.id}`} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border bg-white px-5 py-3 text-sm font-bold text-foreground hover:border-primary/40">
             ثبت درخواست تعمیر
           </Link>
           <Link href="/error-codes" className="inline-flex min-h-12 items-center justify-center px-4 py-3 text-sm font-bold text-primary hover:text-accent-strong">
