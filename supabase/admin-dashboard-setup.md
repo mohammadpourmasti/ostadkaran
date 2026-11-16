@@ -1,4 +1,12 @@
-# Admin dashboard: Supabase setup (nothing here has been run)
+# Admin dashboard: Supabase setup
+
+> **Status (verified against the live database):** all 11 migrations in `supabase/migrations/` are applied, including the
+> optional `sms_outbox` (empty; SMS is disabled). All 24 function bodies match these files (md5 of `prosrc`), and
+> columns, constraints, indexes, RLS, policies and the trigger match. The migrations were applied by hand
+> (SQL editor), so the Supabase CLI history table `supabase_migrations.schema_migrations` does not exist.
+> Do not re-run them: the brand and error-code migrations are not idempotent. The `DRAFT / NOT APPLIED` headers
+> inside the applied files are historical and were left untouched. The text below is the original guide, kept for a
+> fresh database.
 
 The dashboard code lives under `app/admin`. It needs three migrations and one first account. None of this was
 applied by the assistant; review each file, then apply them yourself (Supabase SQL editor or `supabase db push`),

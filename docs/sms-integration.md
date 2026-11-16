@@ -20,7 +20,7 @@ actions/admin/staff.ts ──▶ lib/sms/events.ts ──▶ lib/sms/service.ts 
 | `lib/sms/templates.ts` | قالب‌های فارسی و پارامترهای الزامی |
 | `lib/sms/outbox.ts` | `nullOutbox` (فعلی) و `databaseOutbox` (جدول `sms_outbox`) |
 | `lib/sms/providers/` | `disabled` (فعلی) و registry برای adapterهای آینده |
-| `supabase/migrations/20261101170000_sms_outbox.sql` | جدول وضعیت ارسال (اختیاری، هنوز اجرا نشده) |
+| `supabase/migrations/20261101170000_sms_outbox.sql` | جدول وضعیت ارسال (در دیتابیس واقعی ساخته شده و خالی است؛ تا اتصال پیامک چیزی در آن نوشته نمی‌شود) |
 
 ## رفتار فعلی
 
@@ -42,7 +42,7 @@ actions/admin/staff.ts ──▶ lib/sms/events.ts ──▶ lib/sms/service.ts 
 2. **اطلاعات پنل**: کلید API، شماره/خط ارسال، و اگر ارائه‌دهنده قالب تأییدشده می‌خواهد (الگوی verify/lookup)، شناسه‌ی قالب‌ها. متن قالب‌های `templates.ts` باید با قالب‌های تأییدشده هماهنگ شود.
 3. **ثبت adapter**: فایل `lib/sms/providers/<name>.ts` که `SmsProvider` را پیاده کند، سپس ثبت در `providers/index.ts`.
 4. **متغیرهای محیطی سرور** (روی هاست، نه Git): `SMS_ENABLED=true`، `SMS_PROVIDER=<name>`، `SMS_API_KEY`، `SMS_SENDER_NUMBER`.
-5. **اجرای migration** `20261101170000_sms_outbox.sql` (ترجیحاً اول روی پروژه‌ی تست).
+5. **migration `20261101170000_sms_outbox.sql` قبلاً روی دیتابیس واقعی اعمال شده** (جدول موجود و بدون ردیف است)؛ نیازی به اجرای دوباره نیست.
 6. **لینک امن رمز/دعوت**: با Supabase Auth و `auth.admin.generateLink` (نوع `invite` یا `recovery`) در سرور؛ همراه یک صفحه‌ی تعیین رمز. سپس `notifyTechnicianInvited` / `notifyPasswordLink` صدا زده شود (نقطه‌ی اتصال در `actions/admin/staff.ts`، کامنت «Future SMS hook»). لینک فقط به پیامک می‌رود و ذخیره یا لاگ نمی‌شود.
 7. **اتصال اعلان تخصیص**: بعد از موفقیت `assignTechnicianAction` در `actions/admin/requests.ts`، شماره‌ی تکنسین (از `technician_profiles.phone`) خوانده شود و `notifyAssignment` صدا زده شود. قبل از آن بررسی حریم‌خصوصی و رضایت تکنسین لازم است.
 8. **تست**: ارسال به شماره‌ی خود مدیر در پروژه‌ی تست، بررسی ردیف `sms_outbox` و اینکه هیچ متن یا لینکی در لاگ نیست.
