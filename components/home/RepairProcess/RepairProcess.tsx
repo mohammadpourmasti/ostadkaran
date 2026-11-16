@@ -83,7 +83,7 @@ export function RepairProcess() {
         <div className="mx-auto flex w-full max-w-md flex-col gap-3 max-sm:relative max-sm:aspect-[4/3] max-sm:overflow-hidden max-sm:rounded-3xl sm:max-w-xl sm:flex-row sm:items-stretch lg:max-w-none">
           <div className="overflow-hidden max-sm:absolute max-sm:inset-0 sm:relative sm:min-h-72 sm:w-[52%] sm:shrink-0 sm:rounded-3xl">
             <Image
-              src="/images/sections/repair-process-background.png"
+              src="/images/sections/repair-process-background.webp"
               alt=""
               fill
               sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw"

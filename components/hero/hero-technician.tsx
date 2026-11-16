@@ -10,7 +10,7 @@ const boxStyle = {
 };
 
 const imageProps = {
-  src: "/images/hero/technician.png",
+  src: "/images/hero/technician.webp",
   width: 1536,
   height: 1024,
   sizes: "(min-width: 768px) 460px, 86vw",

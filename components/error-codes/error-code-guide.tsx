@@ -110,7 +110,7 @@ export function ErrorCodeGuide() {
 <section dir="rtl" className="px-3 pt-4 sm:px-5 sm:pt-6">
   <div className="relative isolate mx-auto min-h-[420px] max-w-7xl overflow-hidden rounded-3xl bg-slate-100 sm:min-h-[440px] lg:min-h-[460px]">
     <Image
-      src="/images/error-codes/error-codes-hero.png"
+      src="/images/error-codes/error-codes-hero.webp"
       alt="راهنمای کدهای خطای لوازم خانگی استادکاران"
      
       fill

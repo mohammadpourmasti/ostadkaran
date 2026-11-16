@@ -108,7 +108,7 @@
 
 /* Hero background artwork (public/images/hero). Washes in .hero-backdrop keep text and orbit legible. */
 :root {
-  --hero-art: url("/images/hero/hero-background.png");
+  --hero-art: url("/images/hero/hero-background.webp");
 }
 
 @layer components {
