@@ -67,12 +67,12 @@ export function BrandsSlider({ brands }: { brands: readonly Brand[] }) {
                   className="h-auto max-h-full w-auto max-w-[8.5rem] object-contain"
                 />
               ) : (
-                <span aria-hidden="true" className="text-lg font-extrabold text-primary">
+                <span className="text-lg font-extrabold text-primary">
                   {brand.name}
                 </span>
               )}
             </div>
-            <span className="text-sm/6 font-bold text-foreground">{brand.name}</span>
+            {brand.logo && <span className="text-sm/6 font-bold text-foreground">{brand.name}</span>}
           </li>
         ))}
       </ul>

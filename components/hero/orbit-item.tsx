@@ -82,9 +82,9 @@ export function OrbitItem({
         </span>
         <span
           aria-hidden="true"
-          className={`pointer-events-none absolute left-1/2 -translate-x-1/2 font-medium whitespace-nowrap transition-colors duration-300 ${
+          className={`pointer-events-none absolute left-1/2 -translate-x-1/2 font-medium whitespace-nowrap [text-shadow:0_0_6px_rgb(255_255_255/0.95),0_0_2px_rgb(255_255_255)] transition-colors duration-300 ${
             slot.labelAbove ? "bottom-full mb-[2%]" : "top-full mt-[2%]"
-          } ${isSelected ? "text-primary" : "text-foreground/60 group-hover:text-foreground"}`}
+          } ${isSelected ? "text-primary" : "text-foreground/85 group-hover:text-foreground"}`}
           style={{ fontSize: "clamp(0.6rem, 2.7cqw, 0.75rem)" }}
         >
           {appliance.title}

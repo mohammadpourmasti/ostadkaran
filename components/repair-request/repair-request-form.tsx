@@ -5,6 +5,7 @@ import { issueRepairFormToken } from "@/actions/repair-form-token";
 import { submitRepairRequest, type RepairRequestState } from "@/actions/submit-repair-request";
 import { appliances } from "@/data/appliances";
 import { brandOptions } from "@/data/brands";
+import { siteConfig } from "@/lib/site";
 import {
   LIMITS,
   fieldOrder,
@@ -98,7 +99,17 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
       <div role="status" className="rounded-3xl border border-accent/40 bg-accent/[0.06] p-5 sm:p-7">
         <h2 className="text-lg/8 font-bold text-foreground">درخواست شما ثبت شد</h2>
         <p className="mt-1 text-sm/7 text-foreground">
-          درخواست تعمیر شما با موفقیت ثبت شد. به‌زودی با شما تماس می‌گیریم.
+          درخواست تعمیر شما ثبت شد. با شما تماس می‌گیریم تا مشکل را بررسی کنیم و هزینه را پیش از تعمیر اعلام کنیم.
+        </p>
+        <p className="mt-3 text-sm/7 text-muted">
+          اگر می‌خواهید خودتان تماس بگیرید:{" "}
+          <a
+            href={siteConfig.contact.phone.href}
+            dir="ltr"
+            className="inline-block font-extrabold text-primary hover:text-accent-strong"
+          >
+            {siteConfig.contact.phone.display}
+          </a>
         </p>
       </div>
     );

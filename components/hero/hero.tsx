@@ -24,7 +24,11 @@ export function Hero() {
           >
             لوازم خانگی‌تان خراب شده؟
             <br />
-            <span className="text-accent">استادکار مناسبش رو پیدا کنید.</span>
+            <span className="text-accent">
+              تعمیر لوازم خانگی در اراک؛
+              <br />
+              استادکار مناسبش رو پیدا کنید.
+            </span>
           </h1>
           <p className="mt-3 text-base/8 text-muted sm:text-[1.0625rem]/8 xl:text-base/8">
             <span className="sm:block sm:whitespace-nowrap">مشکل دستگاهتان را با ما در میان بگذارید.</span>{" "}
@@ -34,12 +38,12 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="min-w-0 xl:col-start-2 xl:row-span-3 xl:row-start-1 xl:self-center">
+        <div className="min-w-0 max-xl:order-3 xl:col-start-2 xl:row-span-3 xl:row-start-1 xl:self-center">
           <ApplianceExplorer technician={<HeroTechnician />} />
         </div>
 
         {/* RTL order: درخواست تعمیر (primary) first, then تماس مستقیم. */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start xl:row-start-2">
+        <div className="flex flex-col gap-4 max-xl:order-2 sm:flex-row sm:items-start xl:row-start-2">
           <div className="flex flex-col items-stretch gap-1.5 text-center sm:items-center">
             <RepairRequestCta className="w-full sm:w-auto sm:min-w-44" />
             <span className="text-xs text-muted">ثبت درخواست آنلاین</span>

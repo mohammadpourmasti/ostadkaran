@@ -37,7 +37,14 @@ export function HeroTrustBar() {
             <MouseIcon className="size-5" />
           </span>
           <span className="text-sm/6 text-foreground xl:flex xl:min-h-12 xl:flex-col xl:justify-center">
-            <span className="xl:block xl:whitespace-nowrap">با حرکت موس روی هر دستگاه</span> <span className="xl:block xl:whitespace-nowrap">خدمات مربوط به آن را ببینید</span>
+            <span className="max-lg:hidden [@media(hover:none)]:hidden">
+              <span className="xl:block xl:whitespace-nowrap">با حرکت موس روی هر دستگاه</span>{" "}
+              <span className="xl:block xl:whitespace-nowrap">خدمات مربوط به آن را ببینید</span>
+            </span>
+            <span className="hidden max-lg:inline [@media(hover:none)]:inline">
+              <span className="xl:block xl:whitespace-nowrap">روی هر دستگاه بزنید</span>{" "}
+              <span className="xl:block xl:whitespace-nowrap">خدمات مربوط به آن را ببینید</span>
+            </span>
           </span>
         </li>
         <li className="col-span-full flex items-center justify-center gap-2 rounded-2xl border border-border bg-accent/[0.06] px-4 py-2.5 text-center text-sm/6 font-bold text-primary xl:mt-2">
