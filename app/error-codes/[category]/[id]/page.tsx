@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getErrorCodeCategory } from "@/data/error-codes/categories";
+import { getApprovedProblemsForCode, problemPath } from "@/data/service-problems";
 import { VerificationBadge } from "@/components/error-codes/verification-badge";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
+import { getRelatedErrorCodes } from "@/lib/error-codes/related";
 import { isCodeIndexable } from "@/lib/error-codes/visibility";
 import { truncateAtWord } from "@/lib/seo/text";
 import { defaultOgImages, siteConfig } from "@/lib/site";
@@ -69,6 +71,8 @@ export default async function ErrorCodeDetailPage({ params }: Props) {
   if (!item) notFound();
 
   const verified = item.verification_level === "verified";
+  const related = await getRelatedErrorCodes(item);
+  const guides = getApprovedProblemsForCode(category, item.brand, item.error_code, item.model);
 
   return (
     <main dir="rtl" className="page-container flex-1 py-5 sm:py-8">
@@ -235,6 +239,44 @@ export default async function ErrorCodeDetailPage({ params }: Props) {
               <strong>{item.source_name}</strong>
             )}
           </p>
+        )}
+
+        {guides.length > 0 && (
+          <p className="mt-5 rounded-2xl border border-border bg-white p-5 text-sm leading-8 text-slate-700 shadow-sm">
+            راهنمای کامل مشکل:{" "}
+            {guides.map((guide, index) => (
+              <span key={guide.slug}>
+                {index > 0 && "، "}
+                <Link href={problemPath(guide)} className="font-bold text-primary underline underline-offset-4">
+                  {guide.h1}
+                </Link>
+              </span>
+            ))}
+          </p>
+        )}
+
+        {related.length > 0 && (
+          <nav aria-labelledby="related-codes-heading" className="mt-5 rounded-2xl border border-border bg-white p-5 shadow-sm sm:p-7">
+            <h2 id="related-codes-heading" className="text-lg font-black text-foreground">
+              کدهای خطای مرتبط {c.title}
+            </h2>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {related.map((code) => (
+                <li key={code.id}>
+                  <Link
+                    href={`/error-codes/${category}/${code.id}`}
+                    title={code.title}
+                    className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border px-3.5 text-sm text-primary hover:border-primary/40 hover:bg-slate-50"
+                  >
+                    <span className="font-semibold">{code.brand}</span>
+                    <span dir="ltr" className="font-bold">
+                      {code.error_code}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         )}
 
         <section className="mt-8 rounded-3xl bg-[#0F4C81] p-6 text-center text-white sm:p-9">

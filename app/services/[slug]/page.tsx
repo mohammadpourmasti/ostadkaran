@@ -7,6 +7,9 @@ import { faqJsonLd } from "@/lib/seo/faq-schema";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/service-schema";
 import { defaultOgImages, siteConfig } from "@/lib/site";
 
+// Service pages list a few public error codes from the database; refresh them periodically.
+export const revalidate = 300;
+
 // Only the eight known slugs exist; anything else is a 404.
 export const dynamicParams = false;
 

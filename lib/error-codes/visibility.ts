@@ -43,3 +43,13 @@ export function selectCategoryPageRows<T extends { verification_level: string }>
   const indexable = isCategoryIndexable(visible);
   return { indexable, rows: visible };
 }
+
+/**
+ * Access and indexing of a problem page are separate decisions:
+ *   - access: an "approved" page is always viewable (even with few codes); drafts are viewable only in development;
+ *   - indexing: only an approved page with at least MIN_PUBLIC_CODES_FOR_INDEX distinct public codes is indexable and
+ *     listed in the sitemap. Anything else is `noindex, follow`.
+ */
+export function isProblemPageIndexable(status: string, publicCodeCount: number): boolean {
+  return status === "approved" && publicCodeCount >= MIN_PUBLIC_CODES_FOR_INDEX;
+}

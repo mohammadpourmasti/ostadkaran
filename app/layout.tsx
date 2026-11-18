@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
+import { CallClickTracker } from "@/components/analytics/call-click-tracker";
 import { PublicChrome } from "@/components/layout/public-chrome";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </PublicChrome>
         {children}
         <PublicChrome>
+          <CallClickTracker />
           <SiteFooter />
           <MobileBottomNav />
         </PublicChrome>

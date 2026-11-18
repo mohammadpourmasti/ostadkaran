@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, type ReactNode } from "react";
+import { trackEvent } from "@/lib/analytics/track";
 import { issueRepairFormToken } from "@/actions/repair-form-token";
 import { submitRepairRequest, type RepairRequestState } from "@/actions/submit-repair-request";
 import { appliances } from "@/data/appliances";
@@ -84,6 +85,11 @@ export function RepairRequestForm({ defaultAppliance }: { defaultAppliance?: App
 
   const errors = state.status === "error" ? state.errors : {};
   const values: Partial<FieldValues> = state.status === "error" ? state.values : {};
+
+  useEffect(() => {
+    // Only a newly stored request counts: the server's honeypot and duplicate replies carry no `saved` flag.
+    if (state.status === "success" && state.saved) trackEvent("repair_request_success");
+  }, [state]);
 
   // Move focus to the first invalid field after a failed submission.
   useEffect(() => {

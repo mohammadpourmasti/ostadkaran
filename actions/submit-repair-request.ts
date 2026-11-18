@@ -10,7 +10,8 @@ import { fieldOrder, normalizePhone, validate, type FieldErrors, type FieldValue
 
 export type RepairRequestState =
   | { status: "idle" }
-  | { status: "success" }
+  // `saved` is true only when a new row was really stored; honeypot and duplicate replies omit it (analytics relies on this).
+  | { status: "success"; saved?: true }
   | { status: "error"; message?: string; errors: FieldErrors; values: FieldValues };
 
 const TOO_FAST_ERROR = "ارسال فرم خیلی سریع انجام شد. لطفاً چند ثانیه صبر کنید و دوباره تلاش کنید.";
@@ -135,5 +136,5 @@ export async function submitRepairRequest(
     return { status: "error", message: GENERIC_ERROR, errors: {}, values };
   }
 
-  return { status: "success" };
+  return { status: "success", saved: true };
 }

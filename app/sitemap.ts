@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { errorCodeCategories } from "@/data/error-codes/categories";
+import { getApprovedProblemPages, problemPath } from "@/data/service-problems";
 import { servicePath, services } from "@/data/services";
+import { countIndexableCodes, getProblemCodes } from "@/lib/error-codes/problem-codes";
 import { getPublishedErrorCodes } from "@/lib/error-codes/queries";
-import { isCategoryIndexable, isPubliclyVisible } from "@/lib/error-codes/visibility";
+import { isCategoryIndexable, isProblemPageIndexable, isPubliclyVisible } from "@/lib/error-codes/visibility";
 import { siteConfig } from "@/lib/site";
 import { contentDates } from "@/lib/site-dates";
 
@@ -73,6 +75,23 @@ async function errorCodeEntries(): Promise<MetadataRoute.Sitemap> {
   ];
 }
 
+// Problem pages: listed only when approved AND backed by enough public codes (same rule as the page's robots).
+// Drafts and thin pages stay out; if the database is unreachable the page's code list is empty and it is left out.
+async function problemEntries(): Promise<MetadataRoute.Sitemap> {
+  const entries: MetadataRoute.Sitemap = [];
+  for (const problem of getApprovedProblemPages()) {
+    const codes = await getProblemCodes(problem);
+    if (!isProblemPageIndexable(problem.status, countIndexableCodes(codes))) continue;
+    entries.push({
+      url: `${siteConfig.url}${problemPath(problem)}`,
+      lastModified: new Date(problem.updatedAt),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+  }
+  return entries;
+}
+
 // /repair-request is a form, not a landing page: it is noindex (see its metadata) and not listed here.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
@@ -100,6 +119,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
+    ...(await problemEntries()),
     ...(await errorCodeEntries()),
   ];
 }

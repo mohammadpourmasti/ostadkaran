@@ -6,7 +6,9 @@ import { PhoneCta } from "@/components/ui/phone-cta";
 import { RepairRequestCta } from "@/components/ui/repair-request-cta";
 import { appliances } from "@/data/appliances";
 import { getErrorCodeCategory } from "@/data/error-codes/categories";
+import { getApprovedProblemForCard, problemPath } from "@/data/service-problems";
 import { repairRequestHref, servicePath, services } from "@/data/services";
+import { getServiceErrorCodeLinks } from "@/lib/error-codes/related";
 import { siteConfig } from "@/lib/site";
 import type { Service } from "@/types/service";
 
@@ -43,12 +45,13 @@ function SectionHeading({ id, children }: { id: string; children: string }) {
 }
 
 // Server-rendered template shared by all /services/<slug> pages. Everything specific lives in data/services.ts.
-export function ServicePage({ service }: { service: Service }) {
+export async function ServicePage({ service }: { service: Service }) {
   const appliance = appliances.find((item) => item.id === service.id);
   const requestHref = repairRequestHref(service);
   const otherServices = services.filter((item) => item.id !== service.id);
   // Link to the matching error-code category only when that category exists.
   const errorCategory = getErrorCodeCategory(service.id);
+  const errorCodes = errorCategory ? await getServiceErrorCodeLinks(errorCategory.id) : [];
   // Device photos are 4:3, so they keep their full frame on mobile; the technician photo stays 3:2.
   const headerPhoto = service.image ?? technicianPhoto;
   const isDevicePhoto = service.image !== undefined;
@@ -111,12 +114,24 @@ export function ServicePage({ service }: { service: Service }) {
             علت دقیق هر مشکل پس از بررسی دستگاه مشخص می‌شود؛ موارد زیر فقط علت‌های رایج‌اند.
           </p>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {service.problems.map((problem) => (
-              <li key={problem.title} className="rounded-2xl border border-border bg-surface p-4">
-                <h3 className="text-base/7 font-bold text-foreground">{problem.title}</h3>
-                <p className="mt-1 text-sm/7 text-muted">{problem.description}</p>
-              </li>
-            ))}
+            {service.problems.map((problem) => {
+              // Only approved problem pages are linked; drafts never appear here.
+              const detail = getApprovedProblemForCard(service.id, problem.title);
+              return (
+                <li key={problem.title} className="rounded-2xl border border-border bg-surface p-4">
+                  <h3 className="text-base/7 font-bold text-foreground">{problem.title}</h3>
+                  <p className="mt-1 text-sm/7 text-muted">{problem.description}</p>
+                  {detail && (
+                    <Link
+                      href={problemPath(detail)}
+                      className="mt-2 inline-flex min-h-8 items-center text-sm font-semibold text-accent-strong underline-offset-4 hover:underline"
+                    >
+                      علت‌ها و بررسی اولیه
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </section>
 
@@ -151,6 +166,24 @@ export function ServicePage({ service }: { service: Service }) {
               را ببینید.
             </p>
           )}
+          {errorCategory && errorCodes.length > 0 && (
+            <ul aria-label="نمونه کدهای خطا" className="mt-3 flex flex-wrap gap-2">
+              {errorCodes.map((code) => (
+                <li key={code.id}>
+                  <Link
+                    href={`/error-codes/${errorCategory.id}/${code.id}`}
+                    title={code.title}
+                    className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 text-sm text-primary transition-colors hover:border-accent-strong hover:bg-accent/5"
+                  >
+                    <span className="font-semibold">{code.brand}</span>
+                    <span dir="ltr" className="font-bold">
+                      {code.error_code}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         {/* Process */}
@@ -167,10 +200,18 @@ export function ServicePage({ service }: { service: Service }) {
               </li>
             ))}
           </ol>
-          <p className="mt-4 text-sm/7 text-muted">
-            پاسخ‌گویی {business.hours}؛ {business.duty} هم داریم. دفتر ما در {business.city} و منطقه خدمات‌دهی ما{" "}
-            {business.region} است؛ برای شهرها و روستاهای خارج از {business.city}، پیش از ثبت درخواست تماس بگیرید.
-          </p>
+          <div className="mt-4 rounded-2xl border border-border bg-surface p-4 text-sm/7 text-muted">
+            <h3 className="text-base/7 font-bold text-foreground">خدمات در محل و پاسخ‌گویی</h3>
+            <p className="mt-1">
+              تکنسین استادکاران برای عیب‌یابی و تعمیر به محل شما در {business.city} می‌آید. پاسخ‌گویی {business.hours} است و{" "}
+              {business.duty} هم داریم؛ با {business.experienceYears} سال سابقه، هزینه پیش از تعمیر اعلام می‌شود و{" "}
+              تعمیر {business.warranty} دارد.
+            </p>
+            <p className="mt-1">
+              منطقه خدمات‌دهی ما {business.region} است؛ برای شهرها و روستاهای خارج از {business.city}، پیش از ثبت درخواست
+              تماس بگیرید.
+            </p>
+          </div>
         </section>
 
         {/* Device-specific FAQ */}
